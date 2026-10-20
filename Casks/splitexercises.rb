@@ -7,7 +7,7 @@ cask "splitexercises" do
   desc "Split exercise PDFs into one exercise per sheet"
   homepage "https://github.com/jdevesablanco/SplitExercises"
 
-  depends_on macos: ">= :ventura"
+  depends_on macos: :ventura
 
   app "SplitExercises.app"
   binary "#{appdir}/SplitExercises.app/Contents/Resources/splitexercises"
