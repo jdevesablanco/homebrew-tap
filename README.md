@@ -1,7 +1,5 @@
 # jdevesablanco/tap
 
-Homebrew tap for my free, open-source macOS apps.
-
 ```bash
 brew install --cask jdevesablanco/tap/splitexercises
 brew install --cask jdevesablanco/tap/quitall
