@@ -1,6 +1,6 @@
 cask "piemenu" do
-  version "1.0.0"
-  sha256 "b26ac5b91c124876e80522ddaceecc5eefc78538d5a05e1a902e12b482469996"
+  version "1.0.1"
+  sha256 "f98f12759b0e7570cce2ed6adbcba863ac4152052c5e642b821ab056858138c3"
 
   url "https://github.com/jdevesablanco/PieMenu/releases/download/v#{version}/PieMenu-#{version}.dmg"
   name "PieMenu"
