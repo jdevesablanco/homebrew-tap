@@ -1,9 +1,9 @@
 class Ytdl < Formula
   desc "Download YouTube audio/video from the clipboard link (original audio, WAV, MP3, MP4)"
   homepage "https://github.com/jdevesablanco/homebrew-tap"
-  url "https://raw.githubusercontent.com/jdevesablanco/homebrew-tap/5d4531344a9a0a1aabecc710409b8ab0e293aee2/scripts/ytdl"
-  version "1.0.0"
-  sha256 "f1f220f1f9f113ce9394669fe0a4441d3426288d0e473780da2c84e1723c18fd"
+  url "https://raw.githubusercontent.com/jdevesablanco/homebrew-tap/5223e3862be4709fddbede027160df28d42a1f5a/scripts/ytdl"
+  version "1.1.0"
+  sha256 "d27d078d6791b19bc5f1e432f7e3f12f618b3ff6da9e0a8fe3015eccee654a2e"
   license "MIT"
 
   depends_on :macos
