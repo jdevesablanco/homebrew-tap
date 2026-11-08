@@ -17,6 +17,7 @@ USO
   ytdl [formato]              descarga el enlace copiado en el portapapeles
   ytdl "<enlace>" [formato]   usa el enlace que le des (siempre entre comillas)
   ytdl help                   muestra esta ayuda (también: -h, --help)
+  ytdl update                 actualiza ytdl y yt-dlp (también: upgrade)
 
 FORMATOS
   orig   audio original sin recomprimir, la mejor calidad disponible
@@ -33,13 +34,13 @@ EJEMPLOS
 NOTAS
   · Al terminar abre Finder con el archivo seleccionado.
   · Solo descarga el vídeo del enlace, no la lista de reproducción.
-  · Si deja de funcionar, actualiza: brew upgrade yt-dlp
-  · Actualizar esta herramienta: brew upgrade ytdl
+  · Si deja de funcionar (YouTube cambia a menudo), prueba: ytdl update
 HELP
 }
 
 case "$1" in
   help|-h|--help) usage; exit 0 ;;
+  update|upgrade) brew update && exec brew upgrade jdevesablanco/tap/ytdl yt-dlp ;;
   orig|wav|mp3|mp4|"") URL="$(pbpaste)"; FMT="${1:-orig}" ;;
   *) URL="$1"; FMT="${2:-orig}" ;;
 esac
