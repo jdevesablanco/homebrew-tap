@@ -1,9 +1,9 @@
 class Ytdl < Formula
   desc "Download YouTube audio/video from the clipboard link (original audio, WAV, MP3, MP4)"
   homepage "https://github.com/jdevesablanco/homebrew-tap"
-  url "https://raw.githubusercontent.com/jdevesablanco/homebrew-tap/5223e3862be4709fddbede027160df28d42a1f5a/scripts/ytdl"
-  version "1.1.0"
-  sha256 "d27d078d6791b19bc5f1e432f7e3f12f618b3ff6da9e0a8fe3015eccee654a2e"
+  url "https://raw.githubusercontent.com/jdevesablanco/homebrew-tap/3a51ad644833f8131cc837f762b3dedd625eeb8e/scripts/ytdl"
+  version "1.1.1"
+  sha256 "195b70ba0f90a60d667fa0d395157787ece26132d9796bc58bcc7f8126091456"
   license "MIT"
 
   depends_on :macos
@@ -16,12 +16,18 @@ class Ytdl < Formula
 
   def caveats
     <<~EOS
-      Copy a YouTube link, then run:
-        ytdl          # original audio, no re-encoding
-        ytdl wav      # WAV 24-bit / 48 kHz
+      Cómo se usa:
+        1. Copia un enlace de YouTube (⌘C en la barra de direcciones).
+        2. Escribe en Terminal:  ytdl
+      ytdl lee el enlace de tu portapapeles: no hace falta pegarlo.
+
+        ytdl          # audio original, sin recomprimir
+        ytdl wav      # WAV 24 bit / 48 kHz
         ytdl mp3
         ytdl mp4
-      Files are saved in ~/Downloads. Keep yt-dlp current with `brew upgrade yt-dlp`.
+        ytdl help     # todas las opciones
+
+      Se guarda en ~/Downloads. Si deja de funcionar: brew upgrade yt-dlp
     EOS
   end
 
