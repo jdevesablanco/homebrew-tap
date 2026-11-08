@@ -34,7 +34,7 @@ EJEMPLOS
 NOTAS
   · Al terminar abre Finder con el archivo seleccionado.
   · Solo descarga el vídeo del enlace, no la lista de reproducción.
-  · Se actualiza solo (como mucho 1 vez al día) y reintenta si una descarga falla.
+  · Se actualiza solo.
     Desactivar: YTDL_NO_UPDATE=1 ytdl   ·   Manual: ytdl update
 HELP
 }
