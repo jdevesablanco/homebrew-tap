@@ -24,7 +24,7 @@ FORMATOS
          (.webm/Opus o .m4a). Es el formato por defecto.
   wav    WAV 24 bit / 48 kHz, listo para Logic/Ableton/sampling
   mp3    MP3 de máxima calidad (VBR ~245 kbps), con metadatos
-  mp4    vídeo MP4 en la mejor calidad
+  mp4    vídeo MP4 (H.264 + AAC, se abre en QuickTime y editores; hasta 1080p)
 
 EJEMPLOS
   ytdl                        audio original del enlace copiado
@@ -68,7 +68,7 @@ cd ~/Downloads
 TMP="$(mktemp)"
 args=(--no-playlist -o "%(title)s.%(ext)s")
 case "$FMT" in
-  mp4) args+=(-f "bv*+ba/b" --merge-output-format mp4) ;;
+  mp4) args+=(-S "vcodec:h264,res,acodec:m4a" -f "bv*+ba/b" --merge-output-format mp4) ;;
   mp3) args+=(-x --audio-format mp3 --audio-quality 0 --embed-metadata) ;;
   wav) args+=(-f ba) ;;
   *)   args+=(-f ba --embed-metadata) ;;
