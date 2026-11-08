@@ -1,9 +1,9 @@
 class Ytdl < Formula
   desc "Download YouTube audio/video from the clipboard link (original audio, WAV, MP3, MP4)"
   homepage "https://github.com/jdevesablanco/homebrew-tap"
-  url "https://raw.githubusercontent.com/jdevesablanco/homebrew-tap/22df54257fa9e37648e490c1820ed3836cb33a37/scripts/ytdl"
-  version "1.2.0"
-  sha256 "574e0567be09729f762f58477a06f9f1ae9a47d88bb3ec9251b841c7dd3caac9"
+  url "https://raw.githubusercontent.com/jdevesablanco/homebrew-tap/d3ce814b62840ca75a916437793ec1acf61eb4f5/scripts/ytdl"
+  version "1.3.0"
+  sha256 "3a4fdd73e3803fd6814f1546bad290217e38d8dae7f8bd32b86aacdf578abb7f"
   license "MIT"
 
   depends_on :macos
@@ -29,7 +29,7 @@ class Ytdl < Formula
 
       Al terminar abre Finder con el archivo seleccionado.
 
-      Se guarda en ~/Downloads. Si deja de funcionar: brew upgrade yt-dlp
+      Se guarda en ~/Downloads. Si deja de funcionar: ytdl update
     EOS
   end
 
