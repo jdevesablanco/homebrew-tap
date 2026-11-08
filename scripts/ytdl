@@ -34,7 +34,8 @@ EJEMPLOS
 NOTAS
   · Al terminar abre Finder con el archivo seleccionado.
   · Solo descarga el vídeo del enlace, no la lista de reproducción.
-  · Si deja de funcionar (YouTube cambia a menudo), prueba: ytdl update
+  · Se actualiza solo (como mucho 1 vez al día) y reintenta si una descarga falla.
+    Desactivar: YTDL_NO_UPDATE=1 ytdl   ·   Manual: ytdl update
 HELP
 }
 
@@ -44,6 +45,19 @@ case "$1" in
   orig|wav|mp3|mp4|"") URL="$(pbpaste)"; FMT="${1:-orig}" ;;
   *) URL="$1"; FMT="${2:-orig}" ;;
 esac
+# Auto-actualización: como mucho una vez al día (desactivar: YTDL_NO_UPDATE=1)
+STAMP="$HOME/.cache/ytdl-lastcheck"
+if [ -z "$YTDL_NO_UPDATE" ] && command -v brew >/dev/null 2>&1 \
+   && { [ ! -f "$STAMP" ] || [ -n "$(find "$STAMP" -mtime +0 2>/dev/null)" ]; }; then
+  mkdir -p "$HOME/.cache" && touch "$STAMP"
+  echo "Comprobando actualizaciones…"
+  if brew update -q >/dev/null 2>&1 && brew outdated --quiet jdevesablanco/tap/ytdl yt-dlp 2>/dev/null | grep -q .; then
+    echo "Actualizando ytdl y yt-dlp…"
+    brew upgrade jdevesablanco/tap/ytdl yt-dlp >/dev/null 2>&1 || true
+    exec "$(command -v ytdl)" "$@"
+  fi
+fi
+
 case "$URL" in http*) ;; *)
   printf '%s\n' "No hay ningún enlace de YouTube copiado en el portapapeles (ytdl lo lee de ahí)." \
     "Copia primero un enlace, o usa: ytdl \"<enlace>\"" "Ahora tienes copiado: ${URL:0:60}"
@@ -59,7 +73,11 @@ case "$FMT" in
   wav) args+=(-f ba) ;;
   *)   args+=(-f ba --embed-metadata) ;;
 esac
-yt-dlp "${args[@]}" --print-to-file after_move:filepath "$TMP" "$URL"
+if ! yt-dlp "${args[@]}" --print-to-file after_move:filepath "$TMP" "$URL"; then
+  echo "Falló la descarga. Actualizando yt-dlp y reintentando una vez…"
+  brew upgrade yt-dlp >/dev/null 2>&1 || true
+  yt-dlp "${args[@]}" --print-to-file after_move:filepath "$TMP" "$URL"
+fi
 OUT="$(tail -n 1 "$TMP")"; rm -f "$TMP"
 case "$OUT" in /*) ;; *) OUT="$PWD/$OUT" ;; esac
 if [ "$FMT" = "wav" ]; then
