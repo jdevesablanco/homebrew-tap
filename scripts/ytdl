@@ -1,0 +1,20 @@
+#!/bin/bash
+# ytdl — descarga audio/vídeo de YouTube (y otros sitios) con yt-dlp.
+# Uso: ytdl [orig|wav|mp3|mp4]        -> usa el enlace del portapapeles
+#      ytdl "<enlace>" [formato]      -> usa el enlace dado
+# orig = audio original sin recomprimir (por defecto) · wav = WAV 24 bit/48 kHz
+set -e
+case "$1" in
+  orig|wav|mp3|mp4|"") URL="$(pbpaste)"; FMT="${1:-orig}" ;;
+  *) URL="$1"; FMT="${2:-orig}" ;;
+esac
+case "$URL" in http*) ;; *) echo "El portapapeles no tiene un enlace: $URL"; exit 1 ;; esac
+echo "Descargando: $URL ($FMT)"
+cd ~/Downloads
+case "$FMT" in
+  mp4) yt-dlp --no-playlist -f "bv*+ba/b" --merge-output-format mp4 -o "%(title)s.%(ext)s" "$URL" ;;
+  mp3) yt-dlp --no-playlist -x --audio-format mp3 --audio-quality 0 --embed-metadata -o "%(title)s.%(ext)s" "$URL" ;;
+  wav) F="$(yt-dlp --no-playlist -f ba -o "%(title)s.%(ext)s" --no-simulate --print after_move:filepath "$URL")"
+       ffmpeg -y -loglevel error -i "$F" -c:a pcm_s24le -ar 48000 "${F%.*}.wav" && rm -f "$F" && echo "Listo: ${F%.*}.wav" ;;
+  *)   yt-dlp --no-playlist -f ba --embed-metadata -o "%(title)s.%(ext)s" "$URL" ;;
+esac
