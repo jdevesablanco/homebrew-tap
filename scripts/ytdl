@@ -1,10 +1,39 @@
 #!/bin/bash
 # ytdl — descarga audio/vídeo de YouTube (y otros sitios) con yt-dlp.
-# Uso: ytdl [orig|wav|mp3|mp4]        -> usa el enlace del portapapeles
+# Uso: ytdl [orig|wav|mp3|mp4]        -> usa el enlace del portapapeles   (ytdl help para ayuda)
 #      ytdl "<enlace>" [formato]      -> usa el enlace dado
 # orig = audio original sin recomprimir (por defecto) · wav = WAV 24 bit/48 kHz
 set -e
+usage() {
+  cat <<'HELP'
+ytdl — descarga audio/vídeo de YouTube (y otros sitios) a ~/Downloads
+
+USO
+  ytdl [formato]              usa el enlace que tengas copiado (portapapeles)
+  ytdl "<enlace>" [formato]   usa el enlace que le des (siempre entre comillas)
+  ytdl help                   muestra esta ayuda (también: -h, --help)
+
+FORMATOS
+  orig   audio original sin recomprimir, la mejor calidad disponible
+         (.webm/Opus o .m4a). Es el formato por defecto.
+  wav    WAV 24 bit / 48 kHz, listo para Logic/Ableton/sampling
+  mp3    MP3 de máxima calidad (VBR ~245 kbps), con metadatos
+  mp4    vídeo MP4 en la mejor calidad
+
+EJEMPLOS
+  ytdl                        audio original del enlace copiado
+  ytdl wav                    lo mismo, pero a WAV
+  ytdl "https://youtu.be/XXXXXXXXXXX" mp3
+
+NOTAS
+  · Solo descarga el vídeo del enlace, no la lista de reproducción.
+  · Si deja de funcionar, actualiza: brew upgrade yt-dlp
+  · Actualizar esta herramienta: brew upgrade ytdl
+HELP
+}
+
 case "$1" in
+  help|-h|--help) usage; exit 0 ;;
   orig|wav|mp3|mp4|"") URL="$(pbpaste)"; FMT="${1:-orig}" ;;
   *) URL="$1"; FMT="${2:-orig}" ;;
 esac
