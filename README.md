@@ -46,4 +46,4 @@ ytdl help     # todas las opciones
 
 Lee el enlace del portapapeles, guarda en `~/Downloads` y al terminar abre Finder con el archivo seleccionado.
 
-**Actualizar** (si YouTube cambia algo y deja de funcionar): `ytdl update`
+**Actualizaciones:** `ytdl` se actualiza solo (como mucho una vez al día) y, si una descarga falla, actualiza `yt-dlp` y reintenta. Desactivar: `YTDL_NO_UPDATE=1 ytdl`. Manual: `ytdl update`.
