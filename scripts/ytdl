@@ -31,6 +31,7 @@ EJEMPLOS
   ytdl "https://youtu.be/XXXXXXXXXXX" mp3
 
 NOTAS
+  · Al terminar abre Finder con el archivo seleccionado.
   · Solo descarga el vídeo del enlace, no la lista de reproducción.
   · Si deja de funcionar, actualiza: brew upgrade yt-dlp
   · Actualizar esta herramienta: brew upgrade ytdl
@@ -49,10 +50,19 @@ case "$URL" in http*) ;; *)
 esac
 echo "Descargando: $URL ($FMT)"
 cd ~/Downloads
+TMP="$(mktemp)"
+args=(--no-playlist -o "%(title)s.%(ext)s")
 case "$FMT" in
-  mp4) yt-dlp --no-playlist -f "bv*+ba/b" --merge-output-format mp4 -o "%(title)s.%(ext)s" "$URL" ;;
-  mp3) yt-dlp --no-playlist -x --audio-format mp3 --audio-quality 0 --embed-metadata -o "%(title)s.%(ext)s" "$URL" ;;
-  wav) F="$(yt-dlp --no-playlist -f ba -o "%(title)s.%(ext)s" --no-simulate --print after_move:filepath "$URL")"
-       ffmpeg -y -loglevel error -i "$F" -c:a pcm_s24le -ar 48000 "${F%.*}.wav" && rm -f "$F" && echo "Listo: ${F%.*}.wav" ;;
-  *)   yt-dlp --no-playlist -f ba --embed-metadata -o "%(title)s.%(ext)s" "$URL" ;;
+  mp4) args+=(-f "bv*+ba/b" --merge-output-format mp4) ;;
+  mp3) args+=(-x --audio-format mp3 --audio-quality 0 --embed-metadata) ;;
+  wav) args+=(-f ba) ;;
+  *)   args+=(-f ba --embed-metadata) ;;
 esac
+yt-dlp "${args[@]}" --print-to-file after_move:filepath "$TMP" "$URL"
+OUT="$(tail -n 1 "$TMP")"; rm -f "$TMP"
+case "$OUT" in /*) ;; *) OUT="$PWD/$OUT" ;; esac
+if [ "$FMT" = "wav" ]; then
+  ffmpeg -y -loglevel error -i "$OUT" -c:a pcm_s24le -ar 48000 "${OUT%.*}.wav" && rm -f "$OUT" && OUT="${OUT%.*}.wav"
+fi
+echo "Listo: $OUT"
+open -R "$OUT"
