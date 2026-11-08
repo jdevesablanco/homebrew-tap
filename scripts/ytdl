@@ -8,8 +8,13 @@ usage() {
   cat <<'HELP'
 ytdl — descarga audio/vídeo de YouTube (y otros sitios) a ~/Downloads
 
+CÓMO FUNCIONA
+  1. Copia un enlace de YouTube (⌘C en la barra de direcciones).
+  2. Escribe ytdl en Terminal. Lee el enlace de tu PORTAPAPELES, así que
+     no hace falta pegarlo ni ponerlo entre comillas.
+
 USO
-  ytdl [formato]              usa el enlace que tengas copiado (portapapeles)
+  ytdl [formato]              descarga el enlace copiado en el portapapeles
   ytdl "<enlace>" [formato]   usa el enlace que le des (siempre entre comillas)
   ytdl help                   muestra esta ayuda (también: -h, --help)
 
@@ -37,7 +42,11 @@ case "$1" in
   orig|wav|mp3|mp4|"") URL="$(pbpaste)"; FMT="${1:-orig}" ;;
   *) URL="$1"; FMT="${2:-orig}" ;;
 esac
-case "$URL" in http*) ;; *) echo "El portapapeles no tiene un enlace: $URL"; exit 1 ;; esac
+case "$URL" in http*) ;; *)
+  printf '%s\n' "No hay ningún enlace de YouTube copiado en el portapapeles (ytdl lo lee de ahí)." \
+    "Copia primero un enlace, o usa: ytdl \"<enlace>\"" "Ahora tienes copiado: ${URL:0:60}"
+  exit 1 ;;
+esac
 echo "Descargando: $URL ($FMT)"
 cd ~/Downloads
 case "$FMT" in
